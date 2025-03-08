@@ -42,7 +42,7 @@ Swashbuckle (Swagger)
 #### Primero clonamos el repositorio
 
 ```sh
-git clone https://github.com/NolbertoChagala/BackGestor.git
+git clone https://github.com/NolbertoChagala/BackInveGestor.git
 ```
 
 #### Una vez clando, lo abrimos y ejecutamos el siguiente comando en la terminal del proyecto
