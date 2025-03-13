@@ -53,7 +53,11 @@ dotnet restore
 
 #### Continuamos con el appsettings.json, modificalo y asigna la base de datos correspondiente a tu SQLServer
 
+<<<<<<< HEAD
+sh
+=======
 `sh`
+>>>>>>> cc0bdaec3ca29b2e879b78911277d222a2743f91
 "ConnectionStrings": {
   "DefaultConnection": "Server=Servidor_SQL;Database=BackGes;Trusted_Connection=True;Encrypt=False"
 }
