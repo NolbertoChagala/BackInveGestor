@@ -1,4 +1,6 @@
 using backend_gestorinv.Context;
+using backend_gestorinv.Services;
+using backend_gestorinv.Services.IServices;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+// Inyeccion de dependencias
+builder.Services.AddTransient<IRolService, RolService>();
 
 var app = builder.Build();
 
