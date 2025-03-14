@@ -41,30 +41,24 @@ Swashbuckle (Swagger)
 
 #### Primero clonamos el repositorio
 
-sh
-git clone https://github.com/NolbertoChagala/BackInveGestor.git
+
+`git clone https://github.com/NolbertoChagala/BackInveGestor.git`
 
 
 #### Una vez clando, lo abrimos y ejecutamos el siguiente comando en la terminal del proyecto
 
-sh
 dotnet restore
 
 
 #### Continuamos con el appsettings.json, modificalo y asigna la base de datos correspondiente a tu SQLServer
-
-<<<<<<< HEAD
-sh
-=======
-`sh`
->>>>>>> cc0bdaec3ca29b2e879b78911277d222a2743f91
+`
+cc0bdaec3ca29b2e879b78911277d222a2743f91
 "ConnectionStrings": {
   "DefaultConnection": "Server=Servidor_SQL;Database=BackGes;Trusted_Connection=True;Encrypt=False"
 }
-
+`
 
 
 #### Volvimos abrir la consola y ejecutamos el ultimo comando
 
-sh
-update-database
+`update-database`
