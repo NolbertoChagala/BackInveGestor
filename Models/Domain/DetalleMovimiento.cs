@@ -20,6 +20,6 @@ namespace backend_gestorinv.Models.Domain
         public decimal precio_unitario { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal total { get; set; }
+        public decimal? total { get; set; }
     }
 }
