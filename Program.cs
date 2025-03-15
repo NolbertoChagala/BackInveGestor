@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Inyeccion de dependencias
 builder.Services.AddTransient<IRolService, RolService>();
+builder.Services.AddTransient<IProviderService, ProviderService>();
 
 var app = builder.Build();
 
