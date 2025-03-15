@@ -9,6 +9,7 @@ namespace backend_gestorinv.Models.Domain
         public int id_producto { get; set; }
         public string producto {  get; set; }
         public int stock { get; set; }
+
         [Column(TypeName = "decimal(10,2)")]
         public decimal precio { get; set; }
 

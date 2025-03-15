@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using backend_gestorinv.Models.Domain;
+using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
@@ -8,85 +10,83 @@ namespace backend_gestorinv.Controllers
     [Route("api/categoria")]
     public class CategoriaController : Controller
     {
-        //private readonly ICategoriaServices _categoriaServices;
-        // GET: CategoriaController
-        public ActionResult Index()
+        private readonly ICategoriaService _categoriaService;
+
+        public CategoriaController (ICategoriaService categoriaService)
         {
-            return View();
+            _categoriaService = categoriaService;
         }
 
-
-
-
-
-
-        // GET: CategoriaController/Details/5
-        public ActionResult Details(int id)
+        //Obtener todas las categorias
+        [HttpGet]
+        public async Task<IActionResult> GetCategorias()
         {
-            return View();
+            var categorias = await _categoriaService.GetCategorias();
+            return Ok(new { success = true, message = "Categorias obtenidas correctamente", data = categorias });
         }
 
-        // GET: CategoriaController/Create
-        public ActionResult Create()
+        // Obtenemos las categorias por el ID
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            return View();
+            var categoria = await _categoriaService.GetById(id);
+
+            if (categoria == null)
+            {
+                return NotFound(new { success = false, message = "Categoria no encontrada" });
+            }
+            return Ok(new { success = true, message = "Categoria obtenida correctamente", data = categoria });
         }
 
-        // POST: CategoriaController/Create
+        // Crear una nueva categoria
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> CreateCategoria([FromBody] Categoria categoria)
         {
-            try
+            if (categoria == null || string.IsNullOrEmpty(categoria.categoria))
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest(new { success = false, message = "La categoria es requerida" });
             }
-            catch
+
+            var result = await _categoriaService.CreateCategoria(categoria);
+
+            if (!result)
             {
-                return View();
+                return StatusCode(500, new { success = false, message = "Error al crear la categoria" });
             }
+
+            return Ok(new { success = true, message = "Categoria creada correctamente"});
         }
 
-        // GET: CategoriaController/Edit/5
-        public ActionResult Edit(int id)
+
+        // Editar categoria
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditCategoria(int id, [FromBody] Categoria categoria)
         {
-            return View();
+           if(categoria == null || string.IsNullOrEmpty(categoria.categoria))
+           {
+               return BadRequest(new { success = false, message = "La categoria es requerida" });
+           }
+
+           var updatecategoria = await _categoriaService.EditCategoria(id, categoria);
+
+            if(updatecategoria == null)
+            {
+                return NotFound(new { success = false, message = "Error al editar la categoria" });
+            }
+            return Ok(new { success = true, message = "Categoria editada correctamente", categoria = updatecategoria });
         }
 
-        // POST: CategoriaController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: CategoriaController/Delete/5
-        public ActionResult Delete(int id)
+        // Eliminar categoria
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategoria(int id)
         {
-            return View();
-        }
-
-        // POST: CategoriaController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            var result  = await _categoriaService.DeleteCategoria(id);
+            if(!result)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound(new { success = false, message = "Error al eliminar la categoria" });
             }
-            catch
-            {
-                return View();
-            }
+            return Ok(new { success = true, message = "Categoria eliminada correctamente" });
         }
     }
 }

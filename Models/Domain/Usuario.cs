@@ -6,13 +6,19 @@ namespace backend_gestorinv.Models.Domain
     public class Usuario
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id_usuario { get; set; }
         public string nombre { get; set; }
+        [Required]
+        [EmailAddress]
         public string correo { get; set; }
         public string contraseña { get; set; }
-        [ForeignKey("rol")]
+
+        [ForeignKey ("rol")]
         public int? rol_id { get; set; }
         public Rol rol { get; set; }
+
+
         public ICollection<MovimientoInventario> movimientos { get; set; }
     }
 }
