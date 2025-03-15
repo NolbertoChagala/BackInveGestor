@@ -39,40 +39,39 @@ namespace backend_gestorinv.Migrations
                     b.ToTable("Categorias");
                 });
 
-            modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>
                 {
-                    b.Property<int>("id_movimiento")
+                    b.Property<int>("id_detalle")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_movimiento"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_detalle"));
 
                     b.Property<int>("cantidad")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("fecha_registro")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("movimiento_id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("precio_unitario")
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("producto_id")
                         .HasColumnType("int");
 
-                    b.Property<string>("tipo_movimiento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("total")
+                        .HasColumnType("decimal(10,2)");
 
-                    b.Property<int?>("usuario_id")
-                        .HasColumnType("int");
+                    b.HasKey("id_detalle");
 
-                    b.HasKey("id_movimiento");
+                    b.HasIndex("movimiento_id");
 
                     b.HasIndex("producto_id");
 
-                    b.HasIndex("usuario_id");
-
-                    b.ToTable("movimientosInventario");
+                    b.ToTable("Detalles_Movimiento");
                 });
 
-            modelBuilder.Entity("backend_gestorinv.Models.Domain.Producto", b =>
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
                 {
                     b.Property<int>("id_producto")
                         .ValueGeneratedOnAdd()
@@ -83,7 +82,7 @@ namespace backend_gestorinv.Migrations
                     b.Property<int?>("categoria_id")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("precio")
+                    b.Property<decimal>("precio_unitario")
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("producto")
@@ -102,7 +101,32 @@ namespace backend_gestorinv.Migrations
 
                     b.HasIndex("proveedor_id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Inventario");
+                });
+
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
+                {
+                    b.Property<int>("id_movimiento")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_movimiento"));
+
+                    b.Property<DateTime>("fecha_registro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("tipo_movimiento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("usuario_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("id_movimiento");
+
+                    b.HasIndex("usuario_id");
+
+                    b.ToTable("Movimientos_Inventario");
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Proveedor", b =>
@@ -181,25 +205,26 @@ namespace backend_gestorinv.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>
                 {
-                    b.HasOne("backend_gestorinv.Models.Domain.Producto", "producto")
-                        .WithMany("movimientos")
-                        .HasForeignKey("producto_id")
+                    b.HasOne("backend_gestorinv.Models.Domain.MovimientoInventario", "movimiento")
+                        .WithMany("detalles")
+                        .HasForeignKey("movimiento_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend_gestorinv.Models.Domain.Usuario", "usuario")
-                        .WithMany("movimientos")
-                        .HasForeignKey("usuario_id")
-                        .OnDelete(DeleteBehavior.SetNull);
+                    b.HasOne("backend_gestorinv.Models.Domain.Inventario", "producto")
+                        .WithMany("detalles_movimiento")
+                        .HasForeignKey("producto_id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("movimiento");
 
                     b.Navigation("producto");
-
-                    b.Navigation("usuario");
                 });
 
-            modelBuilder.Entity("backend_gestorinv.Models.Domain.Producto", b =>
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
                 {
                     b.HasOne("backend_gestorinv.Models.Domain.Categoria", "categoria")
                         .WithMany()
@@ -217,6 +242,16 @@ namespace backend_gestorinv.Migrations
                     b.Navigation("proveedor");
                 });
 
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
+                {
+                    b.HasOne("backend_gestorinv.Models.Domain.Usuario", "usuario")
+                        .WithMany("movimientos")
+                        .HasForeignKey("usuario_id")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("usuario");
+                });
+
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Usuario", b =>
                 {
                     b.HasOne("backend_gestorinv.Models.Domain.Rol", "rol")
@@ -227,9 +262,14 @@ namespace backend_gestorinv.Migrations
                     b.Navigation("rol");
                 });
 
-            modelBuilder.Entity("backend_gestorinv.Models.Domain.Producto", b =>
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
                 {
-                    b.Navigation("movimientos");
+                    b.Navigation("detalles_movimiento");
+                });
+
+            modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
+                {
+                    b.Navigation("detalles");
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Proveedor", b =>

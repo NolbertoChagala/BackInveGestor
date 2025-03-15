@@ -10,6 +10,6 @@ namespace backend_gestorinv.Models.Domain
         public string telefono { get; set; }
         public string correo { get; set; }
         public string direccion { get; set; }
-        public ICollection<Producto> productos { get; set; }
+        public ICollection<Inventario> productos { get; set; }
     }
 }

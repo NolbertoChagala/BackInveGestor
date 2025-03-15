@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend_gestorinv.Models.Domain
 {
-    public class Producto
+    public class Inventario
     {
         [Key]
         public int id_producto { get; set; }
@@ -11,7 +11,7 @@ namespace backend_gestorinv.Models.Domain
         public int stock { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
-        public decimal precio { get; set; }
+        public decimal precio_unitario { get; set; }
 
         [ForeignKey("proveedor")]
         public int proveedor_id { get; set; }
@@ -20,7 +20,7 @@ namespace backend_gestorinv.Models.Domain
         [ForeignKey("categoria")]
         public int? categoria_id { get; set; }
         public Categoria categoria { get; set; }
-        public ICollection<MovimientoInventario> movimientos { get; set; }
+        public ICollection<DetalleMovimiento> detalles_movimiento { get; set; }
 
     }
 }

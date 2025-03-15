@@ -54,28 +54,28 @@ namespace backend_gestorinv.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Productos",
+                name: "Inventario",
                 columns: table => new
                 {
                     id_producto = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     producto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     stock = table.Column<int>(type: "int", nullable: false),
-                    precio = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    precio_unitario = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     proveedor_id = table.Column<int>(type: "int", nullable: false),
                     categoria_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Productos", x => x.id_producto);
+                    table.PrimaryKey("PK_Inventario", x => x.id_producto);
                     table.ForeignKey(
-                        name: "FK_Productos_Categorias_categoria_id",
+                        name: "FK_Inventario_Categorias_categoria_id",
                         column: x => x.categoria_id,
                         principalTable: "Categorias",
                         principalColumn: "id_categoria",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Productos_Proveedores_proveedor_id",
+                        name: "FK_Inventario_Proveedores_proveedor_id",
                         column: x => x.proveedor_id,
                         principalTable: "Proveedores",
                         principalColumn: "id_proveedor",
@@ -105,53 +105,79 @@ namespace backend_gestorinv.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "movimientosInventario",
+                name: "Movimientos_Inventario",
                 columns: table => new
                 {
                     id_movimiento = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    producto_id = table.Column<int>(type: "int", nullable: false),
                     usuario_id = table.Column<int>(type: "int", nullable: true),
                     tipo_movimiento = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    cantidad = table.Column<int>(type: "int", nullable: false),
                     fecha_registro = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_movimientosInventario", x => x.id_movimiento);
+                    table.PrimaryKey("PK_Movimientos_Inventario", x => x.id_movimiento);
                     table.ForeignKey(
-                        name: "FK_movimientosInventario_Productos_producto_id",
-                        column: x => x.producto_id,
-                        principalTable: "Productos",
-                        principalColumn: "id_producto",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_movimientosInventario_Usuarios_usuario_id",
+                        name: "FK_Movimientos_Inventario_Usuarios_usuario_id",
                         column: x => x.usuario_id,
                         principalTable: "Usuarios",
                         principalColumn: "id_usuario",
                         onDelete: ReferentialAction.SetNull);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Detalles_Movimiento",
+                columns: table => new
+                {
+                    id_detalle = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    movimiento_id = table.Column<int>(type: "int", nullable: false),
+                    producto_id = table.Column<int>(type: "int", nullable: false),
+                    cantidad = table.Column<int>(type: "int", nullable: false),
+                    precio_unitario = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    total = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Detalles_Movimiento", x => x.id_detalle);
+                    table.ForeignKey(
+                        name: "FK_Detalles_Movimiento_Inventario_producto_id",
+                        column: x => x.producto_id,
+                        principalTable: "Inventario",
+                        principalColumn: "id_producto",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Detalles_Movimiento_Movimientos_Inventario_movimiento_id",
+                        column: x => x.movimiento_id,
+                        principalTable: "Movimientos_Inventario",
+                        principalColumn: "id_movimiento",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_movimientosInventario_producto_id",
-                table: "movimientosInventario",
+                name: "IX_Detalles_Movimiento_movimiento_id",
+                table: "Detalles_Movimiento",
+                column: "movimiento_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Detalles_Movimiento_producto_id",
+                table: "Detalles_Movimiento",
                 column: "producto_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_movimientosInventario_usuario_id",
-                table: "movimientosInventario",
-                column: "usuario_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Productos_categoria_id",
-                table: "Productos",
+                name: "IX_Inventario_categoria_id",
+                table: "Inventario",
                 column: "categoria_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Productos_proveedor_id",
-                table: "Productos",
+                name: "IX_Inventario_proveedor_id",
+                table: "Inventario",
                 column: "proveedor_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movimientos_Inventario_usuario_id",
+                table: "Movimientos_Inventario",
+                column: "usuario_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_rol_id",
@@ -163,19 +189,22 @@ namespace backend_gestorinv.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "movimientosInventario");
+                name: "Detalles_Movimiento");
 
             migrationBuilder.DropTable(
-                name: "Productos");
+                name: "Inventario");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Movimientos_Inventario");
 
             migrationBuilder.DropTable(
                 name: "Categorias");
 
             migrationBuilder.DropTable(
                 name: "Proveedores");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Roles");
