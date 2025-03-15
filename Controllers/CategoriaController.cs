@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
-
-    [Controller]
-    [Route("api/categoria")]
+    [Route("api/categories")]
+    [ApiController]
     public class CategoriaController : Controller
     {
         private readonly ICategoriaService _categoriaService;
