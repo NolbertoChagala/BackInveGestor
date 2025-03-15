@@ -32,7 +32,6 @@ namespace backend_gestorinv.Services
         {
             try
             {
-                // Convertir DTO en objeto Usuario
                 var usuario = new Usuario
                 {
                     nombre = request.nombre,

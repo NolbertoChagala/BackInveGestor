@@ -7,8 +7,8 @@ using backend_gestorinv.DTOs;
 
 namespace backend_gestorinv.Controllers
 {
-    [ApiController]
     [Route("api/usuarios")]
+    [ApiController]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _usuarioService;
