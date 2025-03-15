@@ -7,7 +7,7 @@ using backend_gestorinv.DTOs;
 
 namespace backend_gestorinv.Controllers
 {
-    [Route("api/usuarios")]
+    [Route("api/users")]
     [ApiController]
     public class UsuarioController : Controller
     {
@@ -21,7 +21,7 @@ namespace backend_gestorinv.Controllers
         }
 
         // Obtener todos los usuarios
-        [HttpGet("ObtenerUsuarios")]
+        [HttpGet]
         public IActionResult ObtenerUsuarios()
         {
             try
