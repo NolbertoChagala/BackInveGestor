@@ -24,9 +24,9 @@ namespace backend_gestorinv.Controllers
 
         // Obtener producto por ID
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductDetails(int id)
         {
-            var product = await _inventoryService.GetById(id);
+            var product = await _inventoryService.GetDetailsById(id);
 
             if (product == null)
             {

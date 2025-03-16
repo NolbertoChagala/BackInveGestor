@@ -16,11 +16,20 @@ namespace backend_gestorinv.Services
         }
 
         // Obtener todos los productos
-        public async Task<List<Inventario>> GetProducts()
+        public async Task<List<ProductGetDTO>> GetProducts()
         {
             return await _context.Inventario
                 .Include(p => p.proveedor)
                 .Include(p => p.categoria)
+                .Select(p => new ProductGetDTO
+                {
+                    id_producto = p.id_producto,
+                    producto = p.producto,
+                    stock = p.stock,
+                    proveedor = p.proveedor.proveedor,
+                    categoria = p.categoria.categoria,
+                    precio_unitario = p.precio_unitario
+                })
                 .ToListAsync();
         }
 
@@ -31,6 +40,30 @@ namespace backend_gestorinv.Services
                 .Include(p => p.proveedor)
                 .Include(p => p.categoria)
                 .SingleOrDefaultAsync(p => p.id_producto == id);
+        }
+
+        // Obtener detalles de producto por ID
+        public async Task<ProductDetailsDTO> GetDetailsById(int id)
+        {
+            var product = await _context.Inventario
+                .Include(p => p.categoria)
+                .Include(p => p.proveedor)
+                .SingleOrDefaultAsync(p => p.id_producto == id);
+
+            if (product == null)
+                return null;
+
+            return new ProductDetailsDTO
+            {
+                id_producto = product.id_producto,
+                producto = product.producto,
+                stock = product.stock,
+                precio_unitario = product.precio_unitario,
+                proveedor_id = product.proveedor_id,
+                proveedor = product.proveedor?.proveedor,
+                categoria_id = product.categoria_id,
+                categoria = product.categoria?.categoria 
+            };
         }
 
         // Crear producto
