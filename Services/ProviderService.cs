@@ -26,6 +26,36 @@ namespace backend_gestorinv.Services
             return await _context.Proveedores.Include(p => p.productos).SingleOrDefaultAsync(p => p.id_proveedor == id);
         }
 
+        // Obtener proveedor con productos
+        public async Task<ProviderGetDTO> GetProviderWithProductsById(int id)
+        {
+            var proveedor = await _context.Proveedores
+                .Include(p => p.productos)
+                    .ThenInclude(p => p.categoria)
+                .SingleOrDefaultAsync(p => p.id_proveedor == id);
+
+            if (proveedor == null) return null;
+
+            // Retornamos el DTO completo
+            return new ProviderGetDTO
+            {
+                id_proveedor = proveedor.id_proveedor,
+                proveedor = proveedor.proveedor,
+                telefono = proveedor.telefono,
+                correo = proveedor.correo,
+                direccion = proveedor.direccion,
+
+                productos = proveedor.productos.Select(p => new ProductsDTO
+                {
+                    id_producto = p.id_producto,
+                    producto = p.producto,
+                    stock = p.stock,
+                    precio_unitario = p.precio_unitario,
+                    categoria = p.categoria.categoria
+                }).ToList()
+            };
+        }
+
         // Crear un proveedor
         public async Task<bool> CreateProvider(ProviderCreateDTO request)
         {
