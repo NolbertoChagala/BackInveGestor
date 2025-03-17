@@ -24,17 +24,31 @@ namespace backend_gestorinv.Controllers
         }
 
         // Obtener proveedor por ID
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProviderById(int id)
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetProviderById(int id)
+        //{
+        //    var provider = await _providerService.GetById(id);
+
+        //    if (provider == null)
+        //    {
+        //        return NotFound(new { success = false, message = "Proveedor no encontrado" });
+        //    }
+
+        //    return Ok(new { success = true, message = "Proveedor obtenido correctamente", data = provider });
+        //}
+
+        // Obtener proveedor con productos relacionados (Para detalles)
+        [HttpGet("with-products/{id}")]
+        public async Task<IActionResult> GetProviderWithProducts(int id)
         {
-            var provider = await _providerService.GetById(id);
+            var provider = await _providerService.GetProviderWithProductsById(id);
 
             if (provider == null)
             {
                 return NotFound(new { success = false, message = "Proveedor no encontrado" });
             }
 
-            return Ok(new { success = true, message = "Proveedor obtenido correctamente", data = provider });
+            return Ok(new { success = true, message = "Proveedor con productos obtenido correctamente", data = provider });
         }
 
         // Crear un proveedor

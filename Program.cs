@@ -22,6 +22,7 @@ builder.Services.AddTransient<IRolService, RolService>();
 builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 builder.Services.AddTransient<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<IProviderService, ProviderService>();
+builder.Services.AddTransient<IInventoryService, InventoryService>();
 
 var app = builder.Build();
 
