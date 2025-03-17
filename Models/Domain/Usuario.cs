@@ -14,11 +14,11 @@ namespace backend_gestorinv.Models.Domain
         public string correo { get; set; }
         public string contraseña { get; set; }
 
-        [ForeignKey ("rol")]
+        [ForeignKey(nameof(rol))]
         public int? rol_id { get; set; }
         public Rol rol { get; set; }
 
-
         public ICollection<MovimientoInventario> movimientos { get; set; }
+
     }
 }

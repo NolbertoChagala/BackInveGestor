@@ -36,7 +36,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasKey("id_categoria");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categorias", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>
@@ -68,7 +68,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasIndex("producto_id");
 
-                    b.ToTable("Detalles_Movimiento");
+                    b.ToTable("Detalles_Movimiento", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
@@ -101,7 +101,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasIndex("proveedor_id");
 
-                    b.ToTable("Inventario");
+                    b.ToTable("Inventario", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
@@ -126,7 +126,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasIndex("usuario_id");
 
-                    b.ToTable("Movimientos_Inventario");
+                    b.ToTable("Movimientos_Inventario", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Proveedor", b =>
@@ -155,7 +155,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasKey("id_proveedor");
 
-                    b.ToTable("Proveedores");
+                    b.ToTable("Proveedores", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Rol", b =>
@@ -172,7 +172,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasKey("id_rol");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Usuario", b =>
@@ -202,7 +202,7 @@ namespace backend_gestorinv.Migrations
 
                     b.HasIndex("rol_id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>

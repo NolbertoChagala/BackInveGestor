@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
-    [Route("api/categories")]
+    [Route("api/categoria")]
     [ApiController]
     public class CategoriaController : Controller
     {
