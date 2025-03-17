@@ -15,19 +15,4 @@ namespace backend_gestorinv.Services.IServices
         public Task<bool> DeleteUsuario(int id);
 
     }
-}
-
-//using backend_gestorinv.DTOs;
-//using backend_gestorinv.Models.Domain;
-
-//namespace backend_gestorinv.Services.IServices
-//{
-//    public interface IUsuarioService
-//    {
-//        List<Usuario> GetUsuarios();
-//        Task<Usuario> GetUsuarioById(int id);
-//        Task<bool> CreateUsuario(UsuarioCreateDTO request);
-//        Task<bool> EditUsuario(UsuarioEditDTO request);
-//        Task<bool> DeleteUsuario(int id);
-//    }
-//}
+}  

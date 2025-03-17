@@ -14,15 +14,7 @@ namespace backend_gestorinv.DTOs
         public string contraseña { get; set; } 
 
         [Required(ErrorMessage = "El rol es obligatorio.")]
+
         public int rol_id { get; set; }
     }
 }
-
-
-//contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
-
-
-//     if (!string.IsNullOrEmpty(request.contraseña))
-//{
-//    usuario.contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña);
-//}

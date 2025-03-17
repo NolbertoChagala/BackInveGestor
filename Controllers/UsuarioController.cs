@@ -7,8 +7,8 @@ using backend_gestorinv.DTOs;
 
 namespace backend_gestorinv.Controllers
 {
-    [Route("api/usuarios")]
     [ApiController]
+    [Route("api/usuarios")]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _usuarioService;
@@ -28,26 +28,6 @@ namespace backend_gestorinv.Controllers
             {
                 var result = _usuarioService.GetUsuarios();
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error interno en el servidor", error = ex.Message });
-            }
-        }
-
-        // Obtener roles para crear un nuevo usuario
-        [HttpGet("Crear")]
-        public async Task<IActionResult> ObtenerRolesParaCrearUsuario()
-        {
-            try
-            {
-                List<Rol> result = await _rolService.GetRoles();
-                var roles = result.Select(p => new SelectListItem()
-                {
-                    Text = p.rol,
-                    Value = p.id_rol.ToString()
-                });
-                return Ok(new { roles });
             }
             catch (Exception ex)
             {
@@ -82,32 +62,18 @@ namespace backend_gestorinv.Controllers
             }
         }
 
-        // Obtener un usuario para editar
-        [HttpGet("Editar/{id}")]
-        public async Task<IActionResult> EditarUsuario(int id)
+        //Obtener usuario por ID
+        [HttpGet("{id}")]
+
+        public async Task <IActionResult> GetUsuarioById (int id)
         {
-            try
-            {
-                var usuario = await _usuarioService.GetUsuarioById(id);
-                if (usuario == null)
-                {
-                    return NotFound(new { message = "Usuario no encontrado" });
-                }
+             var usuario = await _usuarioService.GetUsuarioById(id);
 
-                List<Rol> roles = await _rolService.GetRoles();
-                var rolesList = roles.Select(p => new SelectListItem()
-                {
-                    Text = p.rol,
-                    Value = p.id_rol.ToString(),
-                    Selected = p.id_rol == usuario.rol_id // Verifica correctamente el rol seleccionado
-                });
-
-                return Ok(new { usuario, roles = rolesList });
-            }
-            catch (Exception ex)
+            if(usuario == null)
             {
-                return StatusCode(500, new { message = "Error interno del servidor", error = ex.Message });
+                return NotFound(new { succes = false, message = "Usuario no encontrado" });
             }
+            return Ok(new {success = true, message = "Usuario obtenido correctamente", data = usuario });
         }
 
         // Editar usuario
