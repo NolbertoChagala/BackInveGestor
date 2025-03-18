@@ -2,6 +2,7 @@
 using backend_gestorinv.DTOs.MovementDTO;
 using backend_gestorinv.Services.IServices;
 using backend_gestorinv.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend_gestorinv.Services
 {
@@ -96,6 +97,22 @@ namespace backend_gestorinv.Services
                 }
             }
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<MovementGetDTO>> GetAllMovements()
+        {
+            var movements = await _context.Movimientos_Inventario
+                .Include(m => m.usuario)
+                .ToListAsync();
+
+            return movements.Select(m => new MovementGetDTO
+            {
+                id_movimiento = m.id_movimiento,
+                usuario_id = m.usuario_id,
+                usuario_nombre = m.usuario.nombre,
+                tipo_movimiento = m.tipo_movimiento,
+                fecha_registro = m.fecha_registro
+            }).ToList(); 
         }
 
     }

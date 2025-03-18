@@ -35,5 +35,19 @@ namespace backend_gestorinv.Controllers
             }
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllMovements()
+        {
+            try
+            {
+                var movements = await _movementService.GetAllMovements();
+                return Ok(new { succes = true, message = "Movimientos obtenidos correctamente", data = movements });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Error al obtener movimientos: {ex.Message}" });
+            }
+        }
+
     }
 }
