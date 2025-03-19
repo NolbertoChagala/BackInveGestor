@@ -8,7 +8,7 @@ using backend_gestorinv.DTOs;
 namespace backend_gestorinv.Controllers
 {
     [ApiController]
-    [Route("api/Usuario")]
+    [Route("api/users")]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _usuarioService;
@@ -36,7 +36,7 @@ namespace backend_gestorinv.Controllers
         }
 
         // Crear Usuario
-        [HttpPost("Crear")]
+        [HttpPost]
         public async Task<IActionResult> CrearUsuario([FromBody] UsuarioCreateDTO request)
         {
             if (!ModelState.IsValid)
@@ -77,7 +77,7 @@ namespace backend_gestorinv.Controllers
         }
 
         // Editar usuario
-        [HttpPut("Editar/{id_usuario}")]
+        [HttpPut("{id_usuario}")]
         public async Task<IActionResult> EditarUsuario(int id_usuario, [FromBody] UsuarioEditDTO request)
         {
             try
@@ -96,7 +96,7 @@ namespace backend_gestorinv.Controllers
         }
 
         // Eliminar usuario
-        [HttpDelete("Eliminar/{id_usuario}")]
+        [HttpDelete("{id_usuario}")]
         public async Task<IActionResult> EliminarUsuario(int id_usuario)
         {
             try
