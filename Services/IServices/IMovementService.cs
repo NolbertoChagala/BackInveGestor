@@ -8,5 +8,6 @@ namespace backend_gestorinv.Services.IServices
         public Task AddMovementDetails(int movementId, string movementType, List<DetailMovementDTO> details);
         public Task UpdateStock(string movementType, List<DetailMovementDTO> details);
         public Task<List<MovementGetDTO>> GetAllMovements();
+        public Task<MovementWithDetails> GetMovementDetails(int movementId);
     }
 }

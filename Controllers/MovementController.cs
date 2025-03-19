@@ -49,5 +49,23 @@ namespace backend_gestorinv.Controllers
             }
         }
 
+        [HttpGet("{movementId}")]
+        public async Task<IActionResult> GetMovementDetails(int movementId)
+        {
+            try
+            {
+                var movement = await _movementService.GetMovementDetails(movementId);
+                if (movement == null)
+                    return NotFound(new { message = "Movimiento no encontrado." });
+
+                return Ok(movement);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Error al obtener los detalles del movimiento: {ex.Message}" });
+            }
+        }
+
+
     }
 }

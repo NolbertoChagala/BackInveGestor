@@ -99,6 +99,7 @@ namespace backend_gestorinv.Services
             await _context.SaveChangesAsync();
         }
 
+        // Obtener todos los movimientos
         public async Task<List<MovementGetDTO>> GetAllMovements()
         {
             var movements = await _context.Movimientos_Inventario
@@ -113,6 +114,36 @@ namespace backend_gestorinv.Services
                 tipo_movimiento = m.tipo_movimiento,
                 fecha_registro = m.fecha_registro
             }).ToList(); 
+        }
+
+        // Obtener los detalles del movimiento
+        public async Task<MovementWithDetails> GetMovementDetails(int movementId)
+        {
+            var movement = await _context.Movimientos_Inventario
+                .Include(m => m.detalles)
+                    .ThenInclude(d => d.producto)
+                .Include(m => m.usuario)
+                .FirstOrDefaultAsync(m => m.id_movimiento == movementId);
+
+            if (movement == null)
+                return null;
+
+            return new MovementWithDetails
+            {
+                id_movimiento = movement.id_movimiento,
+                usuario_id = movement.usuario_id,
+                usuario_nombre = movement.usuario.nombre,
+                tipo_movimiento = movement.tipo_movimiento,
+                fecha_registro = movement.fecha_registro,
+                detalles = movement.detalles.Select(d => new DetailsDTO
+                {
+                    producto_id = d.producto_id,
+                    producto_nombre = d.producto.producto, 
+                    cantidad = d.cantidad,
+                    precio_unitario = d.precio_unitario,
+                    total = d.total
+                }).ToList()
+            };
         }
 
     }
