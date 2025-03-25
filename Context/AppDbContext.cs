@@ -14,6 +14,7 @@ namespace backend_gestorinv.Context
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<MovimientoInventario> Movimientos_Inventario { get; set; }
         public DbSet<DetalleMovimiento> Detalles_Movimiento { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
