@@ -7,5 +7,7 @@
         public int cantidad { get; set; }
         public decimal precio_unitario { get; set; }
         public decimal? total { get; set; }
+        public int stock_anterior { get; set; }
+        public int stock_nuevo { get; set; }
     }
 }

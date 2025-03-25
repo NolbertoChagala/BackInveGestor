@@ -60,13 +60,18 @@ namespace backend_gestorinv.Services
                 if (product == null)
                     throw new Exception($"El producto con ID {detail.producto_id} no existe.");
 
+                int oldStock = product.stock;
+                int newStock = movementType == "Entrada" ? oldStock + detail.cantidad : oldStock - detail.cantidad;
+
                 var movementDetail = new DetalleMovimiento
                 {
                     movimiento_id = movementId,
                     producto_id = detail.producto_id,
                     cantidad = detail.cantidad,
                     precio_unitario = product.precio_unitario,
-                    total = (movementType == "Salida") ? detail.cantidad * product.precio_unitario : null
+                    total = (movementType == "Salida") ? detail.cantidad * product.precio_unitario : null,
+                    stock_anterior = oldStock,
+                    stock_nuevo = newStock
                 };
 
                 movementDetails.Add(movementDetail);
@@ -91,7 +96,7 @@ namespace backend_gestorinv.Services
                 else if(movementType == "Salida")
                 {
                     if (product.stock < detail.cantidad)
-                        throw new Exception($"Stock insuficiente para el producto con ID {detail.producto_id}");
+                        throw new Exception($"Stock insuficiente para el producto {product.producto}");
 
                     product.stock -= detail.cantidad;
                 }
@@ -141,7 +146,9 @@ namespace backend_gestorinv.Services
                     producto_nombre = d.producto.producto, 
                     cantidad = d.cantidad,
                     precio_unitario = d.precio_unitario,
-                    total = d.total
+                    total = d.total,
+                    stock_anterior = d.stock_anterior,
+                    stock_nuevo = d.stock_nuevo,
                 }).ToList()
             };
         }
