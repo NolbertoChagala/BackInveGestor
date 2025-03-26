@@ -21,5 +21,7 @@ namespace backend_gestorinv.Models.Domain
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal? total { get; set; }
+        public int stock_anterior { get; set; }
+        public int stock_nuevo { get; set; }
     }
 }

@@ -9,7 +9,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios al contenedor
+// Add services to the container.
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -23,16 +24,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Inyección de dependencias
-builder.Services.AddScoped<JwtServices>();
+// Inyeccion de dependencias
+builder.Services.AddScoped<JwtServices> ();
 builder.Services.AddTransient<IRolService, RolService>();
 builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 builder.Services.AddTransient<IUsuarioService, UsuarioService>();
 builder.Services.AddTransient<IProviderService, ProviderService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
 builder.Services.AddTransient<IMovementService, MovementService>();
+builder.Services.AddTransient<ILogService, LogService>();
 
-// Configuración de autenticación JWT
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -46,38 +48,40 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
-        options.RequireHttpsMetadata = false; // Permite peticiones HTTP en desarrollo
+        options.RequireHttpsMetadata = false;
         options.SaveToken = true;
     });
 
+
 builder.Services.AddAuthorization();
 
-var myCorsPolicy = "_myCorsPolicy";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: myCorsPolicy,
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173") // Reemplaza con la URL de tu frontend
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials(); // Necesario si usas autenticación con cookies o tokens en headers
-        });
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
 
-// Configuración del pipeline HTTP
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // Muestra errores detallados en desarrollo
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseCors("_myCorsPolicy"); // Se usa la política correctamente
+
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();
