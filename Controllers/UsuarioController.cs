@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using backend_gestorinv.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend_gestorinv.Controllers
 {
@@ -26,8 +27,8 @@ namespace backend_gestorinv.Controllers
         {
             try
             {
-                var result = await _usuarioService.GetUsuarios(); // Espera el resultado
-                return Ok(result); // Devuelve la lista de usuarios con rol en formato JSON
+                var result = await _usuarioService.GetUsuarios(); 
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -64,7 +65,6 @@ namespace backend_gestorinv.Controllers
 
         //Obtener usuario por ID
         [HttpGet("{id}")]
-
         public async Task <IActionResult> GetUsuarioById (int id)
         {
              var usuario = await _usuarioService.GetUsuarioById(id);

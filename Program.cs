@@ -1,6 +1,7 @@
 using backend_gestorinv.Context;
 using backend_gestorinv.Services;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

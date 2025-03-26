@@ -1,8 +1,7 @@
 ﻿using backend_gestorinv.Context;
 using backend_gestorinv.Models.Domain;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -105,11 +104,12 @@ public class AuthController : Controller
     }
 
     [HttpPost("logout")]
-    [Authorize] 
+    [Authorize]
     public IActionResult Logout()
     {
         return Ok(new { message = "Sesión cerrada correctamente" });
     }
+
 
 }
 
