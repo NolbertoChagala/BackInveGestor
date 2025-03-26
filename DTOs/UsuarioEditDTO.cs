@@ -14,7 +14,6 @@ namespace backend_gestorinv.DTOs
         public string contraseña { get; set; } 
 
         [Required(ErrorMessage = "El rol es obligatorio.")]
-
-        public int rol_id { get; set; }
+        public string rol {  get; set; }
     }
 }

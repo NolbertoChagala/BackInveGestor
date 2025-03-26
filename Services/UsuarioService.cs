@@ -16,9 +16,18 @@ namespace backend_gestorinv.Services
         }
 
         // Obtener todos los usuarios
-        public List<Usuario> GetUsuarios()
+        public async Task<List<UsuarioGetDTO>> GetUsuarios()
         {
-            return _context.Usuarios.Include(u => u.rol).ToList();
+            return await _context.Usuarios
+                .Include(u => u.rol) // Incluir la relación con la tabla de roles
+                .Select(u => new UsuarioGetDTO
+                {
+                    id_usuario = u.id_usuario,
+                    nombre = u.nombre,
+                    correo= u.correo,
+                    rol = u.rol.rol,
+                })
+                .ToListAsync();
         }
 
         // Obtener usuario por ID
@@ -28,26 +37,33 @@ namespace backend_gestorinv.Services
         }
 
         // Crear usuario con DTO
-        public async Task<bool> CreateUsuario(UsuarioCreateDTO request)
-        {
-            try
-            {
-                var usuario = new Usuario
-                {
-                    nombre = request.nombre,
-                    correo = request.correo,
-                    contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
-                    rol_id = request.rol_id
-                };
+        //public async Task<bool> CreateUsuario(UsuarioCreateDTO request)
+        //{
+        //    try
+        //    {
+        //        var rolEncontrado = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
 
-                _context.Usuarios.Add(usuario);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al crear el usuario: " + ex.Message, ex);
-            }
-        }
+        //        if (rolEncontrado == null)
+        //        {
+        //            throw new Exception("El rol especificado no existe ");
+        //        }
+
+        //        var usuario = new Usuario
+        //        {
+        //            nombre = request.nombre,
+        //            correo = request.correo,
+        //            contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
+        //            rol = rolEncontrado,
+        //        };
+
+        //        _context.Usuarios.Add(usuario);
+        //        return await _context.SaveChangesAsync() > 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error al crear el usuario: " + ex.Message, ex);
+        //    }
+        //}
 
         // Editar usuario con DTO
         public async Task<bool> EditUsuario(int id_usuario, UsuarioEditDTO request)
@@ -57,17 +73,23 @@ namespace backend_gestorinv.Services
                 var usuario = await _context.Usuarios.FindAsync(id_usuario);
                 if (usuario == null) return false;
 
-                // Actualizar los campos que pueden cambiar
-                usuario.nombre = request.nombre ?? usuario.nombre;
-                usuario.correo = request.correo ?? usuario.correo;
+                // Buscar el rol en la base de datos por su nombre
+                var rolEntity = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
+                if (rolEntity == null)
+                    throw new Exception("El rol especificado no existe.");
 
-                // Si hay una nueva contraseña, la actualizamos
+                // Actualizar el nombre y correo solo si los valores no son nulos o vacíos
+                usuario.nombre = !string.IsNullOrWhiteSpace(request.nombre) ? request.nombre : usuario.nombre;
+                usuario.correo = !string.IsNullOrWhiteSpace(request.correo) ? request.correo : usuario.correo;
+
+                // Si se proporciona una nueva contraseña, la actualizamos
                 if (!string.IsNullOrEmpty(request.contraseña))
                 {
                     usuario.contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña);
                 }
 
-                usuario.rol_id = request.rol_id;
+                // Actualizar el rol
+                usuario.rol = rolEntity;
 
                 _context.Usuarios.Update(usuario);
                 return await _context.SaveChangesAsync() > 0;
@@ -77,6 +99,9 @@ namespace backend_gestorinv.Services
                 throw new Exception("Error al actualizar el usuario: " + ex.Message, ex);
             }
         }
+
+
+
 
         // Eliminar usuario
         public async Task<bool> DeleteUsuario(int id)

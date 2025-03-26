@@ -63,51 +63,68 @@ public class AuthController : Controller
 
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    public async Task<IActionResult> CrearUsuario([FromBody] RegisterRequest request)
     {
-
+        // Verificar si el correo ya está registrado
         var existingUser = await _context.Usuarios.FirstOrDefaultAsync(u => u.correo == request.correo);
         if (existingUser != null)
             return BadRequest(new { message = "El correo ya está registrado" });
 
-        var adminRole = await _context.Roles.FirstOrDefaultAsync(r => r.rol == "Usuario");
-        if (adminRole == null)
-            return BadRequest(new { message = "El rol de administrador no está configurado en la base de datos" });
+        // Buscar el rol seleccionado por el usuario
+        var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
+        if (userRole == null)
+            return BadRequest(new { message = "El rol seleccionado no es válido" });
 
-
+        // Crear el nuevo usuario
         var newUser = new Usuario
         {
             nombre = request.nombre,
             correo = request.correo,
             contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
-            rol = adminRole,
+            rol = userRole,
         };
 
         _context.Usuarios.Add(newUser);
         await _context.SaveChangesAsync();
 
-        // Generar token JWT
+        // Generar token JWT para el usuario creado
         var token = _jwtServices.GenerateToken(newUser);
 
-        return Ok(new { token, usuario = new { id = newUser.id_usuario, name = newUser.nombre, email = newUser.correo, role = "Usuario" } });
+        // Devolver la respuesta con el token
+        return Ok(new
+        {
+            token,
+            usuario = new
+            {
+                name = newUser.nombre,
+                email = newUser.correo,
+                contraseña = newUser.contraseña,
+                role = userRole.rol
+            }
+        });
     }
 
+    [HttpPost("logout")]
+    [Authorize] 
+    public IActionResult Logout()
+    {
+        return Ok(new { message = "Sesión cerrada correctamente" });
+    }
 
 }
-
-
 
 public class RegisterRequest
 {
     public string nombre { get; set; }
     public string correo { get; set; }
     public string contraseña { get; set; }
+    public string rol { get; set; }
 }
 
 
-public class LoginRequest
-{
-    public string correo { get; set; }
-    public string contraseña { get; set; }
-}
+    public class LoginRequest
+    {
+        public string correo { get; set; }
+        public string contraseña { get; set; }
+    }
 
