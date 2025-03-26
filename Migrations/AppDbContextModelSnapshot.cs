@@ -23,300 +23,300 @@ namespace backend_gestorinv.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Categoria", b =>
-                {
-                    b.Property<int>("id_categoria")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_categoria")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_categoria"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_categoria"));
 
-                    b.Property<string>("categoria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("categoria")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id_categoria");
+                b.HasKey("id_categoria");
 
-                    b.ToTable("Categorias");
-                });
+                b.ToTable("Categorias");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>
-                {
-                    b.Property<int>("id_detalle")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_detalle")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_detalle"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_detalle"));
 
-                    b.Property<int>("cantidad")
-                        .HasColumnType("int");
+                b.Property<int>("cantidad")
+                    .HasColumnType("int");
 
-                    b.Property<int>("movimiento_id")
-                        .HasColumnType("int");
+                b.Property<int>("movimiento_id")
+                    .HasColumnType("int");
 
-                    b.Property<decimal>("precio_unitario")
-                        .HasColumnType("decimal(10,2)");
+                b.Property<decimal>("precio_unitario")
+                    .HasColumnType("decimal(10,2)");
 
-                    b.Property<int>("producto_id")
-                        .HasColumnType("int");
+                b.Property<int>("producto_id")
+                    .HasColumnType("int");
 
-                    b.Property<int>("stock_anterior")
-                        .HasColumnType("int");
+                b.Property<int>("stock_anterior")
+                    .HasColumnType("int");
 
-                    b.Property<int>("stock_nuevo")
-                        .HasColumnType("int");
+                b.Property<int>("stock_nuevo")
+                    .HasColumnType("int");
 
-                    b.Property<decimal?>("total")
-                        .HasColumnType("decimal(10,2)");
+                b.Property<decimal?>("total")
+                    .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("id_detalle");
+                b.HasKey("id_detalle");
 
-                    b.HasIndex("movimiento_id");
+                b.HasIndex("movimiento_id");
 
-                    b.HasIndex("producto_id");
+                b.HasIndex("producto_id");
 
-                    b.ToTable("Detalles_Movimiento");
-                });
+                b.ToTable("Detalles_Movimiento");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
-                {
-                    b.Property<int>("id_producto")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_producto")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_producto"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_producto"));
 
-                    b.Property<int?>("categoria_id")
-                        .HasColumnType("int");
+                b.Property<int?>("categoria_id")
+                    .HasColumnType("int");
 
-                    b.Property<decimal>("precio_unitario")
-                        .HasColumnType("decimal(10,2)");
+                b.Property<decimal>("precio_unitario")
+                    .HasColumnType("decimal(10,2)");
 
-                    b.Property<string>("producto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("producto")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("proveedor_id")
-                        .HasColumnType("int");
+                b.Property<int>("proveedor_id")
+                    .HasColumnType("int");
 
-                    b.Property<int>("stock")
-                        .HasColumnType("int");
+                b.Property<int>("stock")
+                    .HasColumnType("int");
 
-                    b.HasKey("id_producto");
+                b.HasKey("id_producto");
 
-                    b.HasIndex("categoria_id");
+                b.HasIndex("categoria_id");
 
-                    b.HasIndex("proveedor_id");
+                b.HasIndex("proveedor_id");
 
-                    b.ToTable("Inventario");
-                });
+                b.ToTable("Inventario");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Log", b =>
-                {
-                    b.Property<int>("id_log")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_log")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_log"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_log"));
 
-                    b.Property<string>("endpoint")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("endpoint")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("fecha_registro")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("fecha_registro")
+                    .HasColumnType("datetime2");
 
-                    b.Property<string>("mensaje")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("mensaje")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("stack_trace")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("stack_trace")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("status_code")
-                        .HasColumnType("int");
+                b.Property<int>("status_code")
+                    .HasColumnType("int");
 
-                    b.HasKey("id_log");
+                b.HasKey("id_log");
 
-                    b.ToTable("Logs");
-                });
+                b.ToTable("Logs");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
-                {
-                    b.Property<int>("id_movimiento")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_movimiento")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_movimiento"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_movimiento"));
 
-                    b.Property<DateTime>("fecha_registro")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("fecha_registro")
+                    .HasColumnType("datetime2");
 
-                    b.Property<string>("tipo_movimiento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("tipo_movimiento")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("usuario_id")
-                        .HasColumnType("int");
+                b.Property<int?>("usuario_id")
+                    .HasColumnType("int");
 
-                    b.HasKey("id_movimiento");
+                b.HasKey("id_movimiento");
 
-                    b.HasIndex("usuario_id");
+                b.HasIndex("usuario_id");
 
-                    b.ToTable("Movimientos_Inventario");
-                });
+                b.ToTable("Movimientos_Inventario");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Proveedor", b =>
-                {
-                    b.Property<int>("id_proveedor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_proveedor")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_proveedor"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_proveedor"));
 
-                    b.Property<string>("correo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("correo")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("direccion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("direccion")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("proveedor")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("proveedor")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("telefono")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("telefono")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id_proveedor");
+                b.HasKey("id_proveedor");
 
-                    b.ToTable("Proveedores");
-                });
+                b.ToTable("Proveedores");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Rol", b =>
-                {
-                    b.Property<int>("id_rol")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_rol")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_rol"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_rol"));
 
-                    b.Property<string>("rol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("rol")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id_rol");
+                b.HasKey("id_rol");
 
-                    b.ToTable("Roles");
-                });
+                b.ToTable("Roles");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Usuario", b =>
-                {
-                    b.Property<int>("id_usuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("id_usuario")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_usuario"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id_usuario"));
 
-                    b.Property<string>("contraseña")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("contraseña")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("correo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("correo")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("nombre")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("rol_id")
-                        .HasColumnType("int");
+                b.Property<int?>("rol_id")
+                    .HasColumnType("int");
 
-                    b.HasKey("id_usuario");
+                b.HasKey("id_usuario");
 
-                    b.HasIndex("rol_id");
+                b.HasIndex("rol_id");
 
-                    b.ToTable("Usuarios");
-                });
+                b.ToTable("Usuarios");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.DetalleMovimiento", b =>
-                {
-                    b.HasOne("backend_gestorinv.Models.Domain.MovimientoInventario", "movimiento")
-                        .WithMany("detalles")
-                        .HasForeignKey("movimiento_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("backend_gestorinv.Models.Domain.MovimientoInventario", "movimiento")
+                    .WithMany("detalles")
+                    .HasForeignKey("movimiento_id")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("backend_gestorinv.Models.Domain.Inventario", "producto")
-                        .WithMany("detalles_movimiento")
-                        .HasForeignKey("producto_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                b.HasOne("backend_gestorinv.Models.Domain.Inventario", "producto")
+                    .WithMany("detalles_movimiento")
+                    .HasForeignKey("producto_id")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
 
-                    b.Navigation("movimiento");
+                b.Navigation("movimiento");
 
-                    b.Navigation("producto");
-                });
+                b.Navigation("producto");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
-                {
-                    b.HasOne("backend_gestorinv.Models.Domain.Categoria", "categoria")
-                        .WithMany()
-                        .HasForeignKey("categoria_id")
-                        .OnDelete(DeleteBehavior.SetNull);
+            {
+                b.HasOne("backend_gestorinv.Models.Domain.Categoria", "categoria")
+                    .WithMany()
+                    .HasForeignKey("categoria_id")
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("backend_gestorinv.Models.Domain.Proveedor", "proveedor")
-                        .WithMany("productos")
-                        .HasForeignKey("proveedor_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                b.HasOne("backend_gestorinv.Models.Domain.Proveedor", "proveedor")
+                    .WithMany("productos")
+                    .HasForeignKey("proveedor_id")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("categoria");
+                b.Navigation("categoria");
 
-                    b.Navigation("proveedor");
-                });
+                b.Navigation("proveedor");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
-                {
-                    b.HasOne("backend_gestorinv.Models.Domain.Usuario", "usuario")
-                        .WithMany("movimientos")
-                        .HasForeignKey("usuario_id")
-                        .OnDelete(DeleteBehavior.SetNull);
+            {
+                b.HasOne("backend_gestorinv.Models.Domain.Usuario", "usuario")
+                    .WithMany("movimientos")
+                    .HasForeignKey("usuario_id")
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("usuario");
-                });
+                b.Navigation("usuario");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Usuario", b =>
-                {
-                    b.HasOne("backend_gestorinv.Models.Domain.Rol", "rol")
-                        .WithMany()
-                        .HasForeignKey("rol_id")
-                        .OnDelete(DeleteBehavior.SetNull);
+            {
+                b.HasOne("backend_gestorinv.Models.Domain.Rol", "rol")
+                    .WithMany()
+                    .HasForeignKey("rol_id")
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("rol");
-                });
+                b.Navigation("rol");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Inventario", b =>
-                {
-                    b.Navigation("detalles_movimiento");
-                });
+            {
+                b.Navigation("detalles_movimiento");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.MovimientoInventario", b =>
-                {
-                    b.Navigation("detalles");
-                });
+            {
+                b.Navigation("detalles");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Proveedor", b =>
-                {
-                    b.Navigation("productos");
-                });
+            {
+                b.Navigation("productos");
+            });
 
             modelBuilder.Entity("backend_gestorinv.Models.Domain.Usuario", b =>
-                {
-                    b.Navigation("movimientos");
-                });
+            {
+                b.Navigation("movimientos");
+            });
 #pragma warning restore 612, 618
         }
     }
