@@ -33,7 +33,6 @@ public class AuthController : Controller
         return Ok(new { token, usuario });
     }
 
-
     [HttpGet("me")]
     [Authorize] // 🔒 Requiere autenticación con JWT
     public async Task<IActionResult> GetUserProfile()
@@ -60,49 +59,6 @@ public class AuthController : Controller
         });
     }
 
-
-    [HttpPost("register")]
-    public async Task<IActionResult> CrearUsuario([FromBody] RegisterRequest request)
-    {
-        // Verificar si el correo ya está registrado
-        var existingUser = await _context.Usuarios.FirstOrDefaultAsync(u => u.correo == request.correo);
-        if (existingUser != null)
-            return BadRequest(new { message = "El correo ya está registrado" });
-
-        // Buscar el rol seleccionado por el usuario
-        var userRole = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
-        if (userRole == null)
-            return BadRequest(new { message = "El rol seleccionado no es válido" });
-
-        // Crear el nuevo usuario
-        var newUser = new Usuario
-        {
-            nombre = request.nombre,
-            correo = request.correo,
-            contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
-            rol = userRole,
-        };
-
-        _context.Usuarios.Add(newUser);
-        await _context.SaveChangesAsync();
-
-        // Generar token JWT para el usuario creado
-        var token = _jwtServices.GenerateToken(newUser);
-
-        // Devolver la respuesta con el token
-        return Ok(new
-        {
-            token,
-            usuario = new
-            {
-                name = newUser.nombre,
-                email = newUser.correo,
-                contraseña = newUser.contraseña,
-                role = userRole.rol
-            }
-        });
-    }
-
     [HttpPost("logout")]
     [Authorize]
     public IActionResult Logout()
@@ -113,18 +69,11 @@ public class AuthController : Controller
 
 }
 
-public class RegisterRequest
+
+
+public class LoginRequest
 {
-    public string nombre { get; set; }
-    public string correo { get; set; }
-    public string contraseña { get; set; }
-    public string rol { get; set; }
+public string correo { get; set; }
+public string contraseña { get; set; }
 }
-
-
-    public class LoginRequest
-    {
-        public string correo { get; set; }
-        public string contraseña { get; set; }
-    }
 

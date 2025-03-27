@@ -9,7 +9,7 @@ namespace backend_gestorinv.Services.IServices
     {
         public Task<List<UsuarioGetDTO>> GetUsuarios();
         public Task<Usuario> GetUsuarioById(int id);
-        //public Task<bool> CreateUsuario(UsuarioCreateDTO request);
+        public Task<bool> CreateUsuario(UsuarioCreateDTO request);
         public Task<bool> EditUsuario(int id_usuario, UsuarioEditDTO request);
         public Task<bool> DeleteUsuario(int id);
 

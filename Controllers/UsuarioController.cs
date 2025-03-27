@@ -36,32 +36,32 @@ namespace backend_gestorinv.Controllers
             }
         }
 
-        // Crear Usuario
-        //[HttpPost]
-        //public async Task<IActionResult> CrearUsuario([FromBody] UsuarioCreateDTO request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(new { message = "Los datos enviados no son válidos", errors = ModelState.Values.SelectMany(v => v.Errors) });
-        //    }
+        //Crear Usuario
+       [HttpPost]
+        public async Task<IActionResult> CrearUsuario([FromBody] UsuarioCreateDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "Los datos enviados no son válidos", errors = ModelState.Values.SelectMany(v => v.Errors) });
+            }
 
-        //    try
-        //    {
-        //        // Llamar al servicio para crear el usuario con el DTO
-        //        bool result = await _usuarioService.CreateUsuario(request);
+            try
+            {
+                // Llamar al servicio para crear el usuario con el DTO
+                bool result = await _usuarioService.CreateUsuario(request);
 
-        //        if (result)
-        //        {
-        //            return CreatedAtAction(nameof(ObtenerUsuarios), new { id = request.rol }, request);
-        //        }
+                if (result)
+                {
+                    return CreatedAtAction(nameof(ObtenerUsuarios), new { id = request.rol }, request);
+                }
 
-        //        return StatusCode(500, new { message = "Hubo un problema al crear el usuario" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { message = "Error interno en el servidor", error = ex.Message });
-        //    }
-        //}
+                return StatusCode(500, new { message = "Hubo un problema al crear el usuario" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error interno en el servidor", error = ex.Message });
+            }
+        }
 
         //Obtener usuario por ID
         [HttpGet("{id}")]

@@ -36,34 +36,34 @@ namespace backend_gestorinv.Services
             return await _context.Usuarios.Include(u => u.rol).FirstOrDefaultAsync(u => u.id_usuario == id);
         }
 
-        // Crear usuario con DTO
-        //public async Task<bool> CreateUsuario(UsuarioCreateDTO request)
-        //{
-        //    try
-        //    {
-        //        var rolEncontrado = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
+        //Crear usuario con DTO
+        public async Task<bool> CreateUsuario(UsuarioCreateDTO request)
+        {
+            try
+            {
+                var rolEncontrado = await _context.Roles.FirstOrDefaultAsync(r => r.rol == request.rol);
 
-        //        if (rolEncontrado == null)
-        //        {
-        //            throw new Exception("El rol especificado no existe ");
-        //        }
+                if (rolEncontrado == null)
+                {
+                    throw new Exception("El rol especificado no existe ");
+                }
 
-        //        var usuario = new Usuario
-        //        {
-        //            nombre = request.nombre,
-        //            correo = request.correo,
-        //            contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
-        //            rol = rolEncontrado,
-        //        };
+                var usuario = new Usuario
+                {
+                    nombre = request.nombre,
+                    correo = request.correo,
+                    contraseña = BCrypt.Net.BCrypt.HashPassword(request.contraseña),
+                    rol = rolEncontrado,
+                };
 
-        //        _context.Usuarios.Add(usuario);
-        //        return await _context.SaveChangesAsync() > 0;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Error al crear el usuario: " + ex.Message, ex);
-        //    }
-        //}
+                _context.Usuarios.Add(usuario);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al crear el usuario: " + ex.Message, ex);
+            }
+        }
 
         // Editar usuario con DTO
         public async Task<bool> EditUsuario(int id_usuario, UsuarioEditDTO request)
