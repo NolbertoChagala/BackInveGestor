@@ -27,11 +27,11 @@ namespace backend_gestorinv.Controllers
                 // 1. Crear el movimiento
                 int movementId = await _movementService.CreateMovement(movementDTO, movementDTO.detalles);
 
-                return Ok(new { message = "Movimiento registrado correctamente.", movementId });
+                return Ok(new { success = true, message = "Movimiento registrado correctamente.", movementId });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"Error al registrar el movimiento: {ex.Message}" });
+                return StatusCode(500, new { success = false, message = $"Error al registrar el movimiento: {ex.Message}" });
             }
         }
 
