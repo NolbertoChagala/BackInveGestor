@@ -27,13 +27,18 @@ public class JwtServices
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var expireMinutes = double.Parse(_config["Jwt:ExpireMinutes"]);
+        var expirationTime = DateTime.UtcNow.AddSeconds(expireMinutes * 60);
+
+
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(double.Parse(_config["Jwt:ExpireMinutes"])),
+            expires: expirationTime, // Expiración en 15s
             signingCredentials: creds
         );
+
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
