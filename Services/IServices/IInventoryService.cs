@@ -11,5 +11,7 @@ namespace backend_gestorinv.Services.IServices
         public Task<bool> CreateProduct(ProductCreateDTO request);
         public Task<bool> EditProduct(int id, ProductEditDTO request);    
         public Task<bool> DeleteProduct(int id);
+        public Task<byte[]> GenerateLowStockReport();
+
     }
 }

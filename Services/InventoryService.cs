@@ -3,6 +3,12 @@ using backend_gestorinv.Models.Domain;
 using backend_gestorinv.DTOs.ProductDTO;
 using backend_gestorinv.Services.IServices;
 using Microsoft.EntityFrameworkCore;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.IO.Image;
+using System.IO;
+using iText.Layout.Properties;
 
 namespace backend_gestorinv.Services
 {
@@ -128,5 +134,62 @@ namespace backend_gestorinv.Services
             _context.Inventario.Remove(product);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<byte[]> GenerateLowStockReport()
+        {
+            var products = await _context.Inventario
+                .Include(p => p.proveedor)
+                .Include(p => p.categoria)
+                .Where(p => p.stock <= 10)
+                .Select(p => new {
+                    p.producto,
+                    p.stock,
+                    p.precio_unitario,
+                    ProveedorNombre = p.proveedor != null ? p.proveedor.proveedor : "N/A",
+                    CategoriaNombre = p.categoria != null ? p.categoria.categoria : "N/A"
+                })
+                .ToListAsync();
+
+            using (var ms = new MemoryStream())
+            {
+                PdfWriter writer = new PdfWriter(ms);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                // Título del reporte
+                document.Add(new Paragraph("Reporte de Productos con Bajo Stock")
+                    .SetFontSize(20)
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER));
+
+                // Crear la tabla con 5 columnas
+                Table table = new Table(UnitValue.CreatePercentArray(new float[] { 3, 1, 2, 2, 2 }))
+                    .UseAllAvailableWidth()
+                    .SetMarginTop(20);
+
+                // Agregar encabezados
+                table.AddHeaderCell("Producto");
+                table.AddHeaderCell("Stock");
+                table.AddHeaderCell("Precio Unitario");
+                table.AddHeaderCell("Proveedor");
+                table.AddHeaderCell("Categoría");
+
+                // Agregar filas con datos
+                foreach (var product in products)
+                {
+                    table.AddCell(new Paragraph(product.producto));
+                    table.AddCell(new Paragraph(product.stock.ToString()));
+                    table.AddCell(new Paragraph($"{product.precio_unitario:C}"));
+                    table.AddCell(new Paragraph(product.ProveedorNombre));
+                    table.AddCell(new Paragraph(product.CategoriaNombre));
+                }
+
+                // Añadir la tabla al documento
+                document.Add(table);
+                document.Close();
+
+                return ms.ToArray();
+            }
+        }
+
     }
 }

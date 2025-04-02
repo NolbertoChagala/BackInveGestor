@@ -34,6 +34,8 @@ builder.Services.AddTransient<IProviderService, ProviderService>();
 builder.Services.AddTransient<IInventoryService, InventoryService>();
 builder.Services.AddTransient<IMovementService, MovementService>();
 builder.Services.AddTransient<ILogService, LogService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
