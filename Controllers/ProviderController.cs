@@ -1,11 +1,13 @@
 ﻿using backend_gestorinv.DTOs.ProviderDTO;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
     [Route("api/providers")]
     [ApiController]
+    [Authorize]
     public class ProviderController : Controller
     {
         private readonly IProviderService _providerService;

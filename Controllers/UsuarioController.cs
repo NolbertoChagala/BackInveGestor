@@ -10,6 +10,7 @@ namespace backend_gestorinv.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize]
     public class UsuarioController : Controller
     {
         private readonly IUsuarioService _usuarioService;

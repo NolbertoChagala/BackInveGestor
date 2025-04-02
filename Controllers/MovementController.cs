@@ -1,12 +1,14 @@
 ﻿using backend_gestorinv.DTOs.MovementDTO;
 using backend_gestorinv.Services;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
     [Route("api/movements")]
     [ApiController]
+    [Authorize]
     public class MovementController : Controller
     {
         private readonly IMovementService _movementService;

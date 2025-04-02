@@ -1,11 +1,13 @@
 ﻿using backend_gestorinv.Services.IServices;
 using backend_gestorinv.DTOs.ProductDTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend_gestorinv.Controllers
 {
     [Route("api/inventory")]
     [ApiController]
+    [Authorize]
     public class InventoryController : Controller
     {
         private readonly IInventoryService _inventoryService;

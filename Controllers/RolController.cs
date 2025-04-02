@@ -1,11 +1,13 @@
 ﻿using backend_gestorinv.Models.Domain;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
     [Route("api/roles")]
     [ApiController]
+    [Authorize]
     public class RolController : Controller
     {
         private readonly IRolService _rolService;

@@ -1,10 +1,12 @@
 ﻿using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ReportController : ControllerBase
     {
         private readonly IInventoryService _inventoryService;

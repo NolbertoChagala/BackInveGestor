@@ -1,5 +1,6 @@
 ﻿using backend_gestorinv.Models.Domain;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace backend_gestorinv.Controllers
 {
     [Route("api/categoria")]
     [ApiController]
+    [Authorize]
     public class CategoriaController : Controller
     {
         private readonly ICategoriaService _categoriaService;

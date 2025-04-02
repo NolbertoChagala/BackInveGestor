@@ -1,11 +1,13 @@
 ﻿using backend_gestorinv.DTOs;
 using backend_gestorinv.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_gestorinv.Controllers
 {
     [Route("api/logs")]
     [ApiController]
+    [Authorize]
     public class LogController : Controller
     {
         private readonly ILogService _logService;
